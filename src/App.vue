@@ -1,39 +1,104 @@
 <template>
-  <!-- 页面跳转 -->
-  <!-- <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view />
-  </div> -->
   <div id="app">
     <h1>车辆详细信息</h1>
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading">正在加载...</div>
+    <div v-else-if="error">错误：{{ error }}</div>
     <div v-else>
-      <div v-if="error">Error: {{ error }}</div>
-      <div v-else>
-        <p>是否疲劳：{{ data.isTired }}</p>
-        <p>是否酒驾：{{ data.isDrunk }}</p>
-        <p>酒驾概率：{{ data.drunkDrivingPro }}</p>
-        <p>疲劳驾驶概率：{{ data.sleepDrivingPro }}</p>
-        <p>车内酒精浓度比：{{ data.alcoholConc }}</p>
-        <p>温度：{{ data.temperature }}</p>
-        <p>维度：{{ data.latitude }}</p>
-        <p>经度：{{ data.longitude }}</p>
+      <!-- 车辆详细信息 -->
+      <table>
+        <tr>
+          <th>信息项</th>
+          <th>值</th>
+        </tr>
+        <tr>
+          <td>是否疲劳</td>
+          <td>{{ data.isTired }}</td>
+        </tr>
+        <tr>
+          <td>是否酒驾</td>
+          <td>{{ data.isDrunk }}</td>
+        </tr>
+        <tr>
+          <td>酒驾概率</td>
+          <td>{{ data.drunkDrivingPro }}</td>
+        </tr>
+        <tr>
+          <td>车内酒精浓度比</td>
+          <td>{{ data.alcoholConc }}</td>
+        </tr>
+        <tr>
+          <td>温度</td>
+          <td>{{ data.temperature }}</td>
+        </tr>
+        <tr>
+          <td>纬度</td>
+          <td>{{ data.latitude }}</td>
+        </tr>
+        <tr>
+          <td>经度</td>
+          <td>{{ data.longitude }}</td>
+        </tr>
+        <tr>
+          <td>车辆列表</td>
+          <td>
+            <button @click="showCarList">展示车辆列表</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 添加注册车辆的表单 -->
+    <form @submit.prevent="registerNewCar">
+      <label for="carNumber">车牌号：</label>
+      <input type="text" id="carNumber" v-model="newCarNumber" required>
+      <button type="submit">注册车辆</button>
+    </form>
+
+
+    <!-- 车辆列表模态框 -->
+    <div class="modal" :class="{ 'is-active': carListVisible }">
+      <div class="modal-background" @click="hideCarList"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">车辆列表</p>
+          <button class="delete" aria-label="close" @click="hideCarList"></button>
+        </header>
+        <section class="modal-card-body">
+          <table>
+            <tr>
+              <th>序号</th>
+              <th>车牌号</th>
+            </tr>
+            <tr v-for="(detail, index) in CarDataList" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ detail.carNumber }}</td>
+            </tr>
+          </table>
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-primary" @click="hideCarList">关闭</button>
+        </footer>
       </div>
     </div>
+    <!-- 展示地图 -->
+    <div id="map"></div>
   </div>
 </template>
+
 <script>
-import {getData} from '@/api/index.js';
+import L from 'leaflet';
+import { getData, getCarDataList, registerCar } from '@/api/index.js';
+
 export default {
   name: 'App',
   data() {
     return {
-      loading: false,
+      loading: true,
       error: null,
-      data: {}
+      data: {},
+      CarDataList: [],
+      newCarNumber: '', // 添加新车牌号的数据项
+      carListVisible: false
     };
   },
   mounted() {
@@ -41,20 +106,59 @@ export default {
   },
   methods: {
     fetchData() {
-      this.loading = true;
-      getData('粤B12345') // 这里传入具体的车牌号
-        .then(response => {
-          this.data = response.data;
-          this.loading = false;
+      Promise.all([getData('ABC123'), getCarDataList()]) // 使用 Promise.all 来同时获取所有数据
+        .then(([dataResponse, carDataResponse]) => {
+          this.data = dataResponse.data;
+          this.CarDataList = carDataResponse.data;
+          this.initMap(); // 确保在数据加载完毕后初始化地图
         })
         .catch(error => {
           this.error = '请求出错：' + error;
+        })
+        .finally(() => {
           this.loading = false;
         });
+    },
+    initMap() {
+      // 确保此函数在DOM更新后调用
+      this.$nextTick(() => {
+        const map = L.map('map').setView([this.data.latitude, this.data.longitude], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        // 添加标记
+        L.marker([this.data.latitude, this.data.longitude]).addTo(map)
+          .bindPopup('当前位置').openPopup();
+      });
+    },
+    registerNewCar() {
+      // 调用注册车辆函数并传递新车牌号
+      registerCar(this.newCarNumber)
+        .then(response => {
+          // 处理注册成功后的逻辑，可能需要重新加载车辆数据或刷新页面
+          console.log('车辆注册成功:', response);
+          // 重新加载数据
+          this.fetchData();
+          // 清空输入框
+          this.newCarNumber = '';
+        })
+        .catch(error => {
+          // 处理注册失败的情况，可以在界面上显示错误信息
+          console.error('车辆注册失败:', error);
+          // 清空输入框
+          this.newCarNumber = '';
+        });
+    },
+    showCarList() {
+      this.carListVisible = true;
+    },
+    hideCarList() {
+      this.carListVisible = false;
     }
   }
 };
 </script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -64,16 +168,24 @@ export default {
   color: #2c3e50;
 }
 
-nav {
-  padding: 30px;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+th {
+  background-color: #f2f2f2;
+}
+
+#map {
+  height: 400px;
+  /* 确保地图容器有一个非零的高度 */
 }
 </style>
