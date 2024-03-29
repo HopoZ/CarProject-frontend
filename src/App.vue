@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <h1>车辆详细信息</h1>
-    <div v-if="loading">正在加载...</div>
+    <h1>{{this.carNumber}}车辆详细信息</h1>
+    <dv-loading v-if="loading">Loading...</dv-loading>
     <div v-else-if="error">错误：{{ error }}</div>
     <div v-else>
       <!-- 车辆详细信息 -->
@@ -98,18 +98,33 @@ export default {
       data: {},
       CarDataList: [],
       newCarNumber: '', // 添加新车牌号的数据项
-      carListVisible: false
+      carListVisible: false,
+      carNumber: '123456',
     };
   },
   mounted() {
-    this.fetchData();
+    this.GetCarDataList();
   },
   methods: {
-    fetchData() {
-      Promise.all([getData('ABC123'), getCarDataList()]) // 使用 Promise.all 来同时获取所有数据
-        .then(([dataResponse, carDataResponse]) => {
-          this.data = dataResponse.data;
-          this.CarDataList = carDataResponse.data;
+    GetCarDataList() {
+      // 获取车辆列表数据
+      getCarDataList()
+        .then(response => {
+          this.CarDataList = response.data;
+          this.carNumber = this.CarDataList[4].carNumber;
+          // console.log("CarDataList:\n",this.CarDataList);
+          this.GetData();
+
+        })
+        .catch(error => {
+          console.error('获取车辆列表失败:', error);
+        });
+    },
+    GetData() {
+      // 获取单个车辆的数据
+      getData(this.carNumber)
+        .then(response => {
+          this.data = response.data;
           this.initMap(); // 确保在数据加载完毕后初始化地图
         })
         .catch(error => {
@@ -138,7 +153,7 @@ export default {
           // 处理注册成功后的逻辑，可能需要重新加载车辆数据或刷新页面
           console.log('车辆注册成功:', response);
           // 重新加载数据
-          this.fetchData();
+          this.GetCarDataList();
           // 清空输入框
           this.newCarNumber = '';
         })
