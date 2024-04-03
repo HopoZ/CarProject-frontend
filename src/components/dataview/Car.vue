@@ -1,14 +1,19 @@
 <template>
 
   <div id="data-view">
+    <div class="car-photo-container">
+      <img src="http://82.156.65.122:8080/photo/MNO345.jpg" alt="car photo" class="car-photo">
+      <div class="caption">非法驾驶员!</div>
+    </div>
     <h1>{{ this.carNumber }}车辆详细信息</h1>
     <!-- 使用 Element UI 的按钮组件作为触发按钮 -->
     <el-button @click="showCarList">展示车辆列表</el-button>
     <center><dv-decoration-5 style="width:300px;height:40px;" /></center>
+
     <dv-loading v-if="loading">Loading...</dv-loading>
     <div v-else-if="error">错误：{{ error }}</div>
+    <!-- 车辆详细信息 -->
     <dv-border-box-12 v-else>
-      <!-- 车辆详细信息 -->
       <table>
         <tr>
           <td>信息项</td>
@@ -67,16 +72,14 @@
         <dv-decoration-9 style="width:150px;height:150px;">{{ data.alcoholConc }}%</dv-decoration-9>
       </div>
     </div>
-    <div>
-    <img src="http://82.156.65.122:8080/photo/MNO345.jpg" alt="car photo">
-    </div>
     <!-- 展示地图 -->
-    <div id="map"></div>
+    <div id="amapcontainer" style="width: 100%; height: 620px"></div>
   </div>
 </template>
 
 <script>
 import L from 'leaflet';
+import AMapLoader from '@amap/amap-jsapi-loader';
 import { getData, getCarDataList, registerCar } from '@/api/index.js';
 export default {
   mounted() {
@@ -117,7 +120,7 @@ export default {
       getData(this.carNumber)
         .then(response => {
           this.data = response.data;
-          this.initMap(); // 确保在数据加载完毕后初始化地图
+          this.initAMap(); // 确保在数据加载完毕后初始化地图
         })
         .catch(error => {
           this.error = '请求出错：' + error;
@@ -126,17 +129,34 @@ export default {
           this.loading = false;
         });
     },
-    initMap() {
-      // 确保此函数在DOM更新后调用
-      this.$nextTick(() => {
-        const map = L.map('map').setView([this.data.latitude, this.data.longitude], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
-        // 添加标记
-        L.marker([this.data.latitude, this.data.longitude]).addTo(map)
-          .bindPopup('当前位置').openPopup();
-      });
+    initAMap() {
+      AMapLoader.load({
+        key: "c1fbb7c609b76acfd38caab2fdd7fc17", // 申请好的Web端开发者Key，首次调用 load 时必填
+        version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+        plugins: ["AMap.Scale", "AMap.ToolBar", "AMap.ControlBar", 'AMap.Geocoder', 'AMap.Marker',
+          'AMap.CitySearch', 'AMap.Geolocation', 'AMap.AutoComplete', 'AMap.InfoWindow'], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+      }).then((AMap) => {
+        // 获取到作为地图容器的DOM元素，创建地图实例
+        this.map = new AMap.Map("amapcontainer", { //设置地图容器id
+          resizeEnable: true,
+          zoom: this.zoom, // 地图显示的缩放级别
+          viewMode: "3D", // 使用3D视图 
+          zoomEnable: true, // 地图是否可缩放，默认值为true
+          dragEnable: true, // 地图是否可通过鼠标拖拽平移，默认为true
+          doubleClickZoom: true, // 地图是否可通过双击鼠标放大地图，默认为true
+          zoom: 11, //初始化地图级别
+          center: [113.370824, 23.131265], // 初始化中心点坐标 广州
+          // mapStyle: "amap://styles/darkblue", // 设置颜色底层
+        });
+        // 创建一个地图钉（标记）并添加到当前位置
+        new AMap.Marker({
+          position: [this.data.longitude, this.data.latitude], // 设置标记位置
+          map: this.map, // 将标记添加到地图上
+          title: '当前位置' // 设置标记的标题
+        }).setMap(this.map);
+      }).catch(e => {
+        console.log(e)
+      })
     },
     registerNewCar() {
       // 调用注册车辆函数并传递新车牌号
@@ -201,5 +221,37 @@ th {
   justify-content: space-between;
   margin-bottom: 20px;
   /* 可以根据需要进行调整 */
+}
+
+.car-photo-container {
+  position: relative;
+}
+
+.car-photo-container .caption {
+  position: absolute;
+  top: 30px;
+  /* 距离图片底部的距离 */
+  left: 10px;
+  /* 距离图片左侧的距离 */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* 设置背景颜色，可根据需要调整 */
+  color: #fff;
+  /* 设置文字颜色，可根据需要调整 */
+  padding: 4px 8px;
+  /* 设置内边距，可根据需要调整 */
+  font-size: 12px;
+  /* 设置字体大小，可根据需要调整 */
+  border-radius: 4px;
+  /* 设置圆角，可根据需要调整 */
+}
+
+.car-photo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  /* 设置图片宽度 */
+  height: auto;
+  /* 自适应高度 */
 }
 </style>
