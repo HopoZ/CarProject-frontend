@@ -1,19 +1,22 @@
 <template>
 
   <div id="app">
-    <dataview/>
+    <!-- 路由 -->
+    <router-view></router-view>
   </div>
+
 </template>
 
 <script>
 import dataview from './components/dataview/index.vue'
+import router from './router';
 export default {
   name: 'App',
   components: {
     dataview
   },
-  data(){
-    return{}
+  data() {
+    return {}
   }
 }
 </script>

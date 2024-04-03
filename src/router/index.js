@@ -1,15 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "../views/HomeView.vue";
+import AMap from "@/views/AMap.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "home",
-    component: HomeView,
+    path: "/Amap",
+    name: "Amap",
+    component: AMap,
   },
+  {
+    path: "/",
+    name: "detail",
+    component: () => import("@/components/dataview"),
+  }
 ];
 
 const router = new VueRouter({

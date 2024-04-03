@@ -30,3 +30,18 @@
         throw error;
     }
 }
+
+//删除车辆
+export async function deleteCar(carNumber) {
+    try {
+        const response = await axios.get('/web/delete', {
+            params: {
+                carNumber: carNumber
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
