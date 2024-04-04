@@ -1,7 +1,7 @@
 <template>
 
   <div id="data-view">
-    <div class="car-photo-container">
+    <div class="car-photo-container" v-if="HavePhoto">
       <img src="http://82.156.65.122:8080/photo/MNO345.jpg" alt="car photo" class="car-photo">
       <div class="caption">非法驾驶员!</div>
     </div>
@@ -50,7 +50,8 @@
         <el-table-column prop="carNumber" label="车牌号"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="danger" @click="DeleteCar(scope.row)">删除</el-button>
+            <el-button type="info" @click="ChangeCar(scope.row.carNumber)">切换</el-button>
+            <el-button type="danger" @click="DeleteCar(scope.row.carNumber)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -78,7 +79,7 @@
       </div>
     </div>
 
-    <router-link to="/AMap">返回</router-link>
+    <router-link to="/">返回</router-link>
 
     
   </div>
@@ -104,13 +105,14 @@ export default {
       CarDataList: [],
       newCarNumber: '', // 添加新车牌号的数据项
       carListVisible: false,
-      carNumber: '',
+      carNumber: 'MNO345',
+      HavePhoto: true
 
     };
   },
   methods: {
+    // 获取车辆列表数据
     GetCarDataList() {
-      // 获取车辆列表数据
       getCarDataList()
         .then(response => {
           this.CarDataList = response.data;
@@ -134,8 +136,8 @@ export default {
           this.loading = false;
         });
     },
+    // 调用注册车辆函数并传递新车牌号
     registerNewCar() {
-      // 调用注册车辆函数并传递新车牌号
       registerCar(this.newCarNumber)
         .then(response => {
           // 处理注册成功后的逻辑，可能需要重新加载车辆数据或刷新页面
@@ -153,6 +155,7 @@ export default {
         });
     },
     DeleteCar(carNumber) {
+      console.log("删除车辆", carNumber);
       // 调用删除车辆函数并传递车牌号
       deleteCar(carNumber)
         .then(response => {
@@ -165,6 +168,13 @@ export default {
           // 处理删除失败的情况，可以在界面上显示错误信息
           console.error('车辆删除失败:', error);
         });
+    },
+    // 切换车辆
+    ChangeCar(carNumber) {
+      console.log("切换车辆", carNumber);
+      this.carNumber = carNumber;
+      this.GetData();
+      this.carListVisible = false;
     },
     showCarList() {
       this.carListVisible = true;

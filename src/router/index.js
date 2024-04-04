@@ -6,12 +6,12 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/Amap",
+    path: "/",
     name: "Amap",
     component: AMap,
   },
   {
-    path: "/",
+    path: "/detail",
     name: "detail",
     component: () => import("@/components/dataview"),
   }

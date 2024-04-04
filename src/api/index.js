@@ -34,7 +34,7 @@
 //删除车辆
 export async function deleteCar(carNumber) {
     try {
-        const response = await axios.get('/web/delete', {
+        const response = await axios.get('/api//web/delete', {
             params: {
                 carNumber: carNumber
             }
