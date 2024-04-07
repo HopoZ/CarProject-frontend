@@ -5,7 +5,11 @@
       <img src="http://82.156.65.122:8080/photo/MNO345.jpg" alt="car photo" class="car-photo">
       <div class="caption">非法驾驶员!</div>
     </div>
-    <h1>{{ this.carNumber}}车辆详细信息</h1>
+    <div class="button-container">
+      <el-button @click="Move()">返回</el-button>
+
+    </div>
+    <h1>{{ this.carNumber }}车辆详细信息</h1>
     <!-- 使用 Element UI 的按钮组件作为触发按钮 -->
     <el-button @click="showCarList">展示车辆列表</el-button>
     <center><dv-decoration-5 style="width:300px;height:40px;" /></center>
@@ -14,30 +18,44 @@
     <div v-else-if="error">错误：{{ error }}</div>
 
     <!-- 车辆详细信息 -->
-    <dv-border-box-12 v-else>
+    <dv-border-box-12 v-else class="car-detail-table">
       <table>
         <tr>
-          <td>信息项</td>
-          <td>值</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">信息项</dv-decoration-11></center>
+          </td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">值</dv-decoration-11></center>
+          </td>
         </tr>
         <tr>
-          <td>是否疲劳</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">是否疲劳</dv-decoration-11></center>
+          </td>
           <td>{{ data.isTired }}</td>
         </tr>
         <tr>
-          <td>是否酒驾</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">是否酒驾</dv-decoration-11></center>
+          </td>
           <td>{{ data.isDrunk }}</td>
         </tr>
         <tr>
-          <td>温度</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">温度</dv-decoration-11></center>
+          </td>
           <td>{{ data.temperature }}</td>
         </tr>
         <tr>
-          <td>纬度</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">纬度</dv-decoration-11></center>
+          </td>
           <td>{{ data.latitude }}</td>
         </tr>
         <tr>
-          <td>经度</td>
+          <td>
+            <center><dv-decoration-11 style="width:100px;height:60px;">经度</dv-decoration-11></center>
+          </td>
           <td>{{ data.longitude }}</td>
         </tr>
       </table>
@@ -79,9 +97,6 @@
       </div>
     </div>
 
-    <router-link to="/">返回</router-link>
-
-    
   </div>
 </template>
 
@@ -181,6 +196,9 @@ export default {
     },
     hideCarList() {
       this.carListVisible = false;
+    },
+    Move() {
+      router.push({ path: '/', query: { carNumber: this.carNumber } });
     }
   }
 };
@@ -206,6 +224,10 @@ td {
   border: 1px solid #ddd;
   padding: 8px;
 }
+.car-detail-table td{
+  color: blue;
+
+}
 
 th {
   background-color: #f2f2f2;
@@ -222,7 +244,14 @@ th {
   margin-bottom: 20px;
   /* 可以根据需要进行调整 */
 }
+.button-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: auto;
 
+}
 .car-photo-container {
   position: relative;
 }
