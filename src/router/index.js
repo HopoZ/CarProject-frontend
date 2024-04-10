@@ -14,6 +14,11 @@ const routes = [
     path: "/detail",
     name: "detail",
     component: () => import("@/components/dataview"),
+  },
+  {
+    path: "/temp",
+    name: "temp",
+    component: () => import("@/views/Temp.vue"),
   }
 ];
 

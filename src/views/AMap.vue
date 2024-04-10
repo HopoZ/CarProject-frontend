@@ -1,11 +1,17 @@
 <template>
-  <div id="amapcontainer" class="map-container"></div>
+  <div-full-screen-container>
+    <div id="amapcontainer" class="map-container"></div>
+    <div class="art-font">
+      <h1 class="cyberspace">
+        <center>车联网系统</center>
+      </h1>
+    </div>
+  </div-full-screen-container>
 </template>
 
 <script>
 import AMapLoader from '@amap/amap-jsapi-loader';
 import { getData, getCarDataList } from '@/api/index.js';
-import { useRouter } from 'vue-router';
 import router from '@/router';
 
 export default {
@@ -140,7 +146,6 @@ export default {
 /* 地图容器样式 */
 .map-container {
   width: 100%;
-  height: 110vh;
-
+  height: 90vh;
 }
 </style>
