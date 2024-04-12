@@ -1,12 +1,11 @@
 <template>
-  <div-full-screen-container>
-    <div id="amapcontainer" class="map-container"></div>
-    <div class="art-font">
-      <h1 class="cyberspace">
-        <center>车联网系统</center>
-      </h1>
-    </div>
-  </div-full-screen-container>
+  <div>
+    <h1 class="title">
+          <center><dv-decoration-7 :color="['blue','blue']"">车联网系统</dv-decoration-7></center>
+        </h1>
+      <div id="amapcontainer" class="map-container"></div>
+        
+  </div>
 </template>
 
 <script>
@@ -80,7 +79,7 @@ export default {
           pitch: 50, //地图俯仰角度，有效范围 0 度- 83 度
           viewMode: '3D',//使用3D视图
           // terrain: true, //开启地形图
-          // mapStyle: 'amap://styles/whitesmoke', //设置地图的显示样式
+          mapStyle: 'amap://styles/blue', //设置地图的显示样式
           resizeEnable: true, //是否监控地图容器尺寸变化
           zoom: this.zoom, // 地图显示的缩放级别
           zoomEnable: true, // 地图是否可缩放，默认值为true
@@ -88,6 +87,13 @@ export default {
           doubleClickZoom: true, // 地图是否可通过双击鼠标放大地图，默认为true
           zoom: 18, //初始化地图级别
           center: [this.data.longitude, this.data.latitude], // 初始化中心点坐标 某辆车的坐标
+        });
+        // 创建 AMap.Icon 实例：
+        const icon = new AMap.Icon({
+          size: new AMap.Size(40, 50),    // 图标尺寸
+          image: require("./picture/car.png"),  // Icon的图像
+          imageOffset: new AMap.Pixel(0, 0),  // 图像相对展示区域的偏移量，适于雪碧图等
+          imageSize: new AMap.Size(40, 50)   // 根据所设置的大小拉伸或压缩图片
         });
         // 创建所有地图钉（标记）并添加到当前位置
         this.CarDataList.forEach(async (car) => {
@@ -98,7 +104,7 @@ export default {
           const marker = new AMap.Marker({
             position: [this.data.longitude, this.data.latitude], // 设置标记位置
             map: this.map, // 将标记添加到地图上
-            // icon: 'https://raw.githubusercontent.com/HopoZ/CarProject-frontend/main/reference/car.png?token=GHSAT0AAAAAACO7T65SZVUUQNTDWD6YTKXCZQO7RKA', // 设置标记图标
+            icon: icon,
             title: this.data.carNumber, // 设置标记的标题(悬浮显示)
             label: {
               content: car.carNumber, // 设置标记标题内容
@@ -108,7 +114,7 @@ export default {
           marker.on('click', () => {
             const title = marker.getTitle();
             console.log('点击了地图钉:', title);
-            router.push({ path: '/detail', query: { carNumber: title } });
+            router.push({ path: '/detail', query: { carNumber: title } }).catch(e => {});
           });
           //自建图层测试
           var imageLayer = new AMap.ImageLayer({
@@ -143,9 +149,29 @@ export default {
 }
 </script>
 <style scoped>
+body{
+  background-color: #5da0f7;
+
+}
+
 /* 地图容器样式 */
 .map-container {
   width: 100%;
   height: 90vh;
+
+  /* 水平居中 */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:0px;
+
+}
+
+/* 字体样式 */
+.title {
+  font-size: 30px;
+  font-weight: bold;
+  color: blue;
+  text-align: center;
+  margin-top: 10px;
 }
 </style>

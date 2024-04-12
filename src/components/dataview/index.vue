@@ -1,22 +1,28 @@
 <template>
     <div>
-        <Car/>
+        <div>
+            <Car />
+        </div>
+        <!-- <div>
+            <Temp />
+        </div>  -->
     </div>
 </template>
 
 <script>
 import Car from './Car.vue'
+// import Temp from './Temp.vue'
 export default {
     name: 'dataview',
     components: {
-        Car
+        Car,
+        // Temp
     },
-    data(){
-        return{}
+    data() {
+        return {}
     },
-    methods:{}
+    methods: {}
 }
 </script>
 
-<style>
-</style>
+<style></style>

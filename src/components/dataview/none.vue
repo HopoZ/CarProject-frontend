@@ -1,80 +1,55 @@
 <template>
-  <div>
-      <div class="container" ref="chartContainer" style="width: 600px; height: 400px;"></div>
+  <div class="container">
+    <!-- 左边部分：车辆信息 -->
+    <div class="left-section">
+      <!-- 车辆详细信息部分 -->
+      <div class="car-detail">
+        <!-- 车辆信息内容 -->
+      </div>
+      <!-- 展示车辆列表按钮 -->
+      <div class="button-container">
+        <!-- 返回按钮 -->
+      </div>
+    </div>
+
+    <!-- 右边部分 -->
+    <div class="right-section">
+      <!-- 上半部分：仪表盘 -->
+      <div class="dashboard">
+        <!-- 仪表盘内容 -->
+      </div>
+
+      <!-- 下半部分：折线图 -->
+      <div class="line-chart">
+        <!-- 折线图内容 -->
+      </div>
+    </div>
   </div>
 </template>
 
-<script>
-import echarts from 'echarts';
-import { getTemperatureLog } from '@/api/index.js';
-
-export default {
-  name: 'Temp',
-  data() {
-      return {
-          carNumber: 'MNO345',
-          tempData: [
-              // Your fixed tempData here
-          ],
-      };
-  },
-  mounted() {
-      this.carNumber = this.$route.query.carNumber || 'MNO345';
-      // this.GetTempData(); // If you don't need this, you can remove it
-      console.log('Temp mounted:', this.tempData);
-      
-      // Initialize ECharts instance
-      this.initChart();
-  },
-  methods: {
-      // Initialize ECharts chart with tempData
-      initChart() {
-          const chartContainer = this.$refs.chartContainer;
-          const myChart = echarts.init(chartContainer);
-
-          // Generate x-axis data and temperature data
-          const xAxisData = this.tempData.map(item => item.datetime);
-          const temperatureData = this.tempData.map(item => item.temperature);
-
-          // Set chart options
-          const option = {
-              title: {
-                  text: '车辆温度趋势'
-              },
-              xAxis: {
-                  type: 'category',
-                  name: '时间',
-                  data: xAxisData
-              },
-              yAxis: {
-                  type: 'value',
-                  name: '温度'
-              },
-              series: [{
-                  data: temperatureData,
-                  type: 'line',
-                  smooth: true
-              }]
-          };
-
-          // Set chart options and render
-          myChart.setOption(option);
-      },
-      // 获取车辆温度数据
-      GetTempData() {
-          getTemperatureLog(this.carNumber)
-              .then(response => {
-                  this.tempData = response.data;
-                  console.log('temp:', this.tempData);
-                  
-                  // After getting tempData, initialize the chart
-                  this.initChart();
-              })
-              .catch(error => {
-                  console.error('获取车辆温度数据失败:', error);
-              });
-      },
-  },
+<style>
+.container {
+  display: flex;
 }
-</script>
 
+.left-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.right-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard {
+  flex: 1;
+  padding: 20px;
+}
+
+.line-chart {
+  flex: 1;
+  padding: 20px;
+}
+</style>

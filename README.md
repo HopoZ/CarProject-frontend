@@ -23,7 +23,8 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-TODO 蓝色背景
-温度历史记录(画温度走势图)
-车主信息(姓名，生日等)
+# 效果展示
+![](./picture/Snipaste_2024-04-13_03-09-18.png)
+![](./picture/Snipaste_2024-04-13_03-09-54.png)
+![](./picture/Snipaste_2024-04-13_03-10-04.png)
 
