@@ -3,17 +3,33 @@
     <dv-border-box-9>
       <div class="main_bar">
         <h2>
-          <dv-border-box-8 style="display: flex;"><i class="el-icon-view"></i>数据概览</dv-border-box-8>
+          <button type="button" class="button">
+              <div class="button-top">数据概览</div>
+              <div class="button-bottom"></div>
+              <div class="button-base"></div>
+            </button>
         </h2>
         <h2>
-          <dv-border-box-8 style="display: flex;"><i class="el-icon-setting"></i>系统设置</dv-border-box-8>
+         <button type="button" class="button">
+              <div class="button-top">系统设置</div>
+              <div class="button-bottom"></div>
+              <div class="button-base"></div>
+            </button>
         </h2>
 
         <h1 class="title">
           <center><dv-decoration-7 :color="['blue', 'blue']">车联网系统</dv-decoration-7></center>
         </h1>
-        <h2><dv-border-box-8 style="display: flex;"> <i class="el-icon-search"></i>查询统计</dv-border-box-8></h2>
-        <h2><dv-border-box-8 style="display: flex;"><i class="el-icon-upload2"></i>信息录入</dv-border-box-8></h2>
+        <h2><button type="button" class="button">
+              <div class="button-top">查询统计</div>
+              <div class="button-bottom"></div>
+              <div class="button-base"></div>
+            </button></h2>
+        <h2><button type="button" class="button">
+              <div class="button-top">信息录入</div>  
+              <div class="button-bottom"></div>
+              <div class="button-base"></div>
+            </button></h2>
       </div>
     </dv-border-box-9>
     <div class=" main">
@@ -83,8 +99,8 @@
               </div>
             </div>
           </dv-border-box-12></div>
-            <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>
-            <div id="pieChart" style="width: 350px; height: 400px;"></div>
+        <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>
+        <div id="pieChart" style="width: 350px; height: 400px;"></div>
       </div>
     </div>
 
@@ -287,6 +303,97 @@ export default {
 }
 </script>
 <style scoped>
+/* 按钮样式 */
+.button {
+  -webkit-appearance: none;
+  appearance: none;
+  position: relative;
+  border-width: 0;
+  padding: 0 8px 12px;
+  min-width: 10em;
+  box-sizing: border-box;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+  padding: 8px 16px;
+  transform: translateY(0);
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 -1px rgba(0, 0, 0, .25);
+  transition-property: transform;
+  transition-duration: .2s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.button:active .button-top {
+  transform: translateY(6px);
+}
+
+.button-top::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+  background-image: radial-gradient(#0f59edea, rgb(21, 5, 173));
+  text-align: center;
+  color: #fff;
+  box-shadow: inset 0 0 0px 1px rgba(255, 255, 255, .2), 0 1px 2px 1px rgba(255, 255, 255, .2);
+  transition-property: border-radius, padding, width, transform;
+  transition-duration: .2s;
+}
+
+.button:active .button-top::after {
+  border-radius: 6px;
+  padding: 0 2px;
+}
+
+.button-bottom {
+  position: absolute;
+  z-index: -1;
+  bottom: 4px;
+  left: 4px;
+  border-radius: 8px / 16px 16px 8px 8px;
+  padding-top: 6px;
+  width: calc(100% - 8px);
+  height: calc(100% - 10px);
+  box-sizing: content-box;
+  background-color: #0c2eed;
+  background-image: radial-gradient(4px 8px at 4px calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(4px 8px at calc(100% - 4px) calc(100% - 8px), rgba(255, 255, 255, .25), transparent), radial-gradient(16px at -4px 0, white, transparent), radial-gradient(16px at calc(100% + 4px) 0, white, transparent);
+  box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.5), inset 0 -1px 3px 3px rgba(0, 0, 0, .4);
+  transition-property: border-radius, padding-top;
+  transition-duration: .2s;
+}
+
+.button:active .button-bottom {
+  border-radius: 10px 10px 8px 8px / 8px;
+  padding-top: 0;
+}
+
+.button-base {
+  position: absolute;
+  z-index: -2;
+  top: 4px;
+  left: 0;
+  border-radius: 12px;
+  width: 100%;
+  height: calc(100% - 4px);
+  background-color: rgba(0, 0, 0, .15);
+  box-shadow: 0 1px 1px 0 black, inset 0 2px 2px rgba(0, 0, 0, .25);
+}
+
+
 .dv-border-box-8 {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
   /* 添加阴影效果 */
