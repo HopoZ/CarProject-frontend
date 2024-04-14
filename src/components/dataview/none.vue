@@ -1,55 +1,57 @@
 <template>
-  <div class="container">
-    <!-- 左边部分：车辆信息 -->
-    <div class="left-section">
-      <!-- 车辆详细信息部分 -->
-      <div class="car-detail">
-        <!-- 车辆信息内容 -->
-      </div>
-      <!-- 展示车辆列表按钮 -->
-      <div class="button-container">
-        <!-- 返回按钮 -->
-      </div>
-    </div>
-
-    <!-- 右边部分 -->
-    <div class="right-section">
-      <!-- 上半部分：仪表盘 -->
-      <div class="dashboard">
-        <!-- 仪表盘内容 -->
-      </div>
-
-      <!-- 下半部分：折线图 -->
-      <div class="line-chart">
-        <!-- 折线图内容 -->
-      </div>
-    </div>
-  </div>
+  <div id="main" style="width: 600px; height: 400px;"></div>
 </template>
 
-<style>
-.container {
-  display: flex;
-}
+<script>
+import * as echarts from 'echarts';
+import 'echarts-gl';
 
-.left-section {
-  flex: 1;
-  padding: 20px;
-}
+export default {
+  data() {
+    return {
+      ROOT_PATH: 'https://echarts.apache.org/examples',
+      myChart: null,
+      option: {
+        backgroundColor: '#000',
+        globe: {
+          baseTexture: this.ROOT_PATH + '/data-gl/asset/earth.jpg',
+          heightTexture: this.ROOT_PATH + '/data-gl/asset/bathymetry_bw_composite_4k.jpg',
+          displacementScale: 0.1,
+          shading: 'lambert',
+          environment: this.ROOT_PATH + '/data-gl/asset/starfield.jpg',
+          light: {
+            ambient: {
+              intensity: 0.1
+            },
+            main: {
+              intensity: 1.5
+            }
+          },
+          layers: [
+            {
+              type: 'blend',
+              blendTo: 'emission',
+              texture: this.ROOT_PATH + '/data-gl/asset/night.jpg'
+            },
+            {
+              type: 'overlay',
+              texture: this.ROOT_PATH + '/data-gl/asset/clouds.png',
+              shading: 'lambert',
+              distance: 5
+            }
+          ]
+        },
+        series: []
+      }
+    };
+  },
+  mounted() {
+    this.myChart = echarts.init(document.getElementById('main'));
+    this.myChart.setOption(this.option);
+  }
+};
+</script>
 
-.right-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.dashboard {
-  flex: 1;
-  padding: 20px;
-}
-
-.line-chart {
-  flex: 1;
-  padding: 20px;
-}
+<style scoped>
+/* 可选的样式 */
 </style>

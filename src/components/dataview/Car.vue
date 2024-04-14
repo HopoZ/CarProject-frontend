@@ -28,7 +28,9 @@
           </a>
         </div>
       </div>
-      <h1>{{ this.carNumber }}车辆详细信息</h1>
+      <div style="text-align: center;margin: 0 auto;width: 50%;">
+        <dv-border-box-12><h1>{{ this.carNumber }}车辆详细信息</h1></dv-border-box-12>
+      </div>
     </div>
 
     <div class="main">
@@ -109,23 +111,23 @@
         <!-- 温度折线图 -->
         <div class="chart_container" ref="chartContainer" style="width: 600px; height: 400px;"></div>
       </div>
+    </div>
 
-      <div class="chart_row">
-        <!-- 酒驾概率图 -->
-        <div class="chart_container">
-          <h2>酒驾概率</h2>
-          <div id="drunkDrivingChart" style="width:400px;height:400px;"></div>
-        </div>
-        <!-- 酒精浓度比图 -->
-        <div class="chart_container">
-          <h2>酒精浓度</h2>
-          <div id="alcoholConcChart" style="width:400px;height:400px;"></div>
-        </div>
-        <!-- 温度表盘图 -->
-        <div class="chart_container">
-          <h2>车内温度</h2>
-          <div id="temperatureChart" style="width: 400px; height: 400px;"></div>
-        </div>
+    <div class="chart_row">
+      <!-- 酒驾概率图 -->
+      <div class="chart_container">
+        <h2><dv-border-box-8>酒驾概率</dv-border-box-8></h2>
+        <div id="drunkDrivingChart" style="width:400px;height:400px;"></div>
+      </div>
+      <!-- 酒精浓度比图 -->
+      <div class="chart_container">
+        <h2><dv-border-box-8>酒精浓度</dv-border-box-8></h2>
+        <div id="alcoholConcChart" style="width:400px;height:400px;"></div>
+      </div>
+      <!-- 温度表盘图 -->
+      <div class="chart_container">
+        <h2><dv-border-box-8>车内温度</dv-border-box-8></h2>
+        <div id="temperatureChart" style="width: 400px; height: 400px;"></div>
       </div>
     </div>
   </div>
@@ -763,5 +765,10 @@ th {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+.chart_row {
+  display: flex;
+  justify-content: space-around;
 }
 </style>

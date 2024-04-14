@@ -1,10 +1,93 @@
 <template>
   <div>
-    <h1 class="title">
-          <center><dv-decoration-7 :color="['blue','blue']"">车联网系统</dv-decoration-7></center>
+    <dv-border-box-9>
+      <div class="main_bar">
+        <h2>
+          <dv-border-box-8 style="display: flex;"><i class="el-icon-view"></i>数据概览</dv-border-box-8>
+        </h2>
+        <h2>
+          <dv-border-box-8 style="display: flex;"><i class="el-icon-setting"></i>系统设置</dv-border-box-8>
+        </h2>
+
+        <h1 class="title">
+          <center><dv-decoration-7 :color="['blue', 'blue']">车联网系统</dv-decoration-7></center>
         </h1>
-      <div id="amapcontainer" class="map-container"></div>
-        
+        <h2><dv-border-box-8 style="display: flex;"> <i class="el-icon-search"></i>查询统计</dv-border-box-8></h2>
+        <h2><dv-border-box-8 style="display: flex;"><i class="el-icon-upload2"></i>信息录入</dv-border-box-8></h2>
+      </div>
+    </dv-border-box-9>
+    <div class=" main">
+      <div class="left">
+        <div><dv-border-box-12>
+            <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
+            <div style="display: flex;flex-direction: column; align-items: center;">
+              <div>
+                <img src="./picture/info_1.png" />
+                车辆总数{{ CarDataList.length }}
+              </div>
+              <div>
+                <img src="./picture/info_2.png" />
+                车辆在线{{ CarDataList.length }}
+              </div>
+            </div>
+          </dv-border-box-12></div>
+
+        <div><dv-border-box-12>
+            <h2><dv-border-box-8>疲劳总数</dv-border-box-8></h2>
+            <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
+              style="width: 90%;margin:auto;">
+              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
+              <el-table-column prop="isTired" label="是否疲劳">
+                <template slot-scope="scope">
+                  <el-tag
+                    :style="{ backgroundColor: scope.row.isTired === 'Tired!' ? '#FF4444' : '', color: '#FFFFFF' }"
+                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isTired }}</el-tag>
+                </template>
+              </el-table-column>
+            </el-table>
+          </dv-border-box-12></div>
+
+        <div><dv-border-box-12>
+            <h2><dv-border-box-8>酒驾总数</dv-border-box-8></h2>
+            <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
+              style="width: 90%;margin:auto;">
+              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
+              <el-table-column prop="isDrunk" label="是否酒驾">
+                <template slot-scope="scope">
+                  <el-tag
+                    :style="{ backgroundColor: scope.row.isDrunk === 'Drunk!' ? '#FF4444' : '', color: '#FFFFFF' }"
+                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isDrunk }}</el-tag>
+                </template>
+              </el-table-column>
+            </el-table>
+          </dv-border-box-12></div>
+      </div>
+
+      <div class="mid" style="display: flex;flex-direction: column;">
+        <h2><dv-border-box-10>行驶总览</dv-border-box-10></h2>
+        <dv-border-box-11>
+          <div id="amapcontainer" class="map-container"></div>
+        </dv-border-box-11>
+      </div>
+      <div class="right">
+        <div style="flex:1;"><dv-border-box-12>
+            <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
+            <div style="display: flex;flex-direction: column;">
+              <div>
+                <img src="./picture/info_4.png" />
+                行驶里程总计数 444km
+              </div>
+              <div>
+                <img src="./picture/info_5.png" />
+                行驶里程平均数 88km
+              </div>
+            </div>
+          </dv-border-box-12></div>
+            <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>
+            <div id="pieChart" style="width: 350px; height: 400px;"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -12,6 +95,7 @@
 import AMapLoader from '@amap/amap-jsapi-loader';
 import { getData, getCarDataList } from '@/api/index.js';
 import router from '@/router';
+import * as echarts from 'echarts';
 
 export default {
   name: 'AMap',
@@ -22,6 +106,19 @@ export default {
       CarDataList: [],
       carNumber: 'MNO345',
       data: {},
+      carType: [{
+        name: '小型车',
+        value: 2
+      }, {
+        name: '中型车',
+        value: 2
+      }, {
+        name: '大型车',
+        value: 3
+      }, {
+        name: '超大型车',
+        value: 3
+      }],
     };
   },
   mounted() {
@@ -40,13 +137,70 @@ export default {
     console.log("==================destroyed==================");
   },
   methods: {
+    //渲染饼图
+    renderPieChart() {
+      var myChart = echarts.init(document.getElementById('pieChart'));
+
+      var option = {
+        title: {
+          text: '车辆类型分布',
+          left: 'center',
+          textStyle: {
+            color: '#333',
+            fontSize: 16,
+            fontWeight: 'normal'
+          }
+        },
+        backgroundColor: '#f5f5f5', // 设置背景颜色
+        tooltip: {
+          trigger: 'item',
+          formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+          {
+            name: '车辆类型',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            avoidLabelOverlap: false,
+            label: {
+              show: true, // 显示标签
+              position: 'inside', // 标签位置，可选值有 inside, outside, center
+              formatter: '{b}: {c} ({d}%)', // 标签内容格式
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '20',
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            labelLine: {
+              show: true, // 显示标签线
+              length: 20, // 标签线长度
+              length2: 10 // 第二段标签线长度
+            },
+            data: this.carType
+          }
+        ]
+      };
+      myChart.setOption(option);
+    },
+    //为表格行添加样式
+    tableRowClassName({ row }) {
+      if (row.isTired === 'Tired!') {
+        return 'warning-row';
+      }
+      return 'danger-row';
+    },
     // 获取车辆列表数据
     GetCarDataList() {
       getCarDataList()
         .then(async response => {
           this.CarDataList = response.data;
+          console.log('获取到车辆列表了', this.CarDataList);
           await this.GetData(this.carNumber);
           this.initAMap();
+          this.renderPieChart();
         })
         .catch(error => {
           console.error('获取车辆列表失败:', error);
@@ -57,7 +211,7 @@ export default {
       await getData(carNumber)
         .then(response => {
           this.data = response.data;
-          console.log('Nice', this.data);
+          console.log('获取到这辆车数据了', this.data);
         })
         .catch(error => {
           this.error = '请求出错：' + error;
@@ -79,7 +233,7 @@ export default {
           pitch: 50, //地图俯仰角度，有效范围 0 度- 83 度
           viewMode: '3D',//使用3D视图
           // terrain: true, //开启地形图
-          mapStyle: 'amap://styles/blue', //设置地图的显示样式
+          // mapStyle: 'amap://styles/blue', //设置地图的显示样式
           resizeEnable: true, //是否监控地图容器尺寸变化
           zoom: this.zoom, // 地图显示的缩放级别
           zoomEnable: true, // 地图是否可缩放，默认值为true
@@ -97,10 +251,7 @@ export default {
         });
         // 创建所有地图钉（标记）并添加到当前位置
         this.CarDataList.forEach(async (car) => {
-          console.log('hhhhh', car.carNumber);
-          console.log('m', this.data);
           await this.GetData(car.carNumber);
-          console.log('n', this.data);
           const marker = new AMap.Marker({
             position: [this.data.longitude, this.data.latitude], // 设置标记位置
             map: this.map, // 将标记添加到地图上
@@ -114,7 +265,7 @@ export default {
           marker.on('click', () => {
             const title = marker.getTitle();
             console.log('点击了地图钉:', title);
-            router.push({ path: '/detail', query: { carNumber: title } }).catch(e => {});
+            router.push({ path: '/detail', query: { carNumber: title } }).catch(e => { });
           });
           //自建图层测试
           var imageLayer = new AMap.ImageLayer({
@@ -126,19 +277,6 @@ export default {
             // zooms: [15, 20]
           });
           this.map.add(imageLayer);
-
-
-          // HARD 3D车辆
-          // // 加载AMap.GltfLoader插件
-          // AMap.plugin(["AMap.GltfLoader"], function () {
-          //   // 创建AMap.GltfLoader插件实例
-          //   var gltf = new AMap.GltfLoader();
-
-          //   // 调用load方法，加载 glTF 模型资源
-          //   var urlDuck = '/reference/Taxi.gltf';  // 模型资源文件路径，远程/本地文件均可
-          //   gltf.load(urlDuck, function (gltfCity) {
-          //     // gltfCity 为解析后的gltf对象
-          //   });
         });
       }).catch(e => {
         console.log(e)
@@ -149,20 +287,40 @@ export default {
 }
 </script>
 <style scoped>
-body{
-  background-color: #5da0f7;
+.dv-border-box-8 {
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  /* 添加阴影效果 */
 
+  /* 添加立体效果 */
+  transform-style: preserve-3d;
+  transition: transform 0.3s;
 }
+
+/* 鼠标悬停时增加立体旋转效果 */
+.dv-border-box-8:hover {
+  transform: rotateY(20deg);
+}
+
+.el-table .danger-row {
+  background: rgb(190, 7, 7);
+}
+
+/* 主导航栏样式 */
+.main_bar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
 
 /* 地图容器样式 */
 .map-container {
-  width: 100%;
-  height: 90vh;
+  margin: 0 auto;
+  height: 83vh;
 
-  /* 水平居中 */
   margin-left: auto;
   margin-right: auto;
-  margin-top:0px;
+  margin-top: 0px;
 
 }
 
@@ -173,5 +331,36 @@ body{
   color: blue;
   text-align: center;
   margin-top: 10px;
+}
+
+/* 布局 */
+.left {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+}
+
+.left>div {
+  flex: 1;
+}
+
+.mid {
+  width: 50%;
+  margin: 0 auto;
+  height: 90vh;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0px;
+}
+
+.right {
+  width: 25%;
+  display: flex;
+  flex-direction: column;
+}
+
+.right>div {
+  flex: 1;
 }
 </style>
