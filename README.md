@@ -24,7 +24,6 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 # 效果展示
-![](./picture/Snipaste_2024-04-13_03-09-18.png)
-![](./picture/Snipaste_2024-04-13_03-09-54.png)
-![](./picture/Snipaste_2024-04-13_03-10-04.png)
+![](./picture/Snipaste_2024-04-14_22-59-57.png)
+![](./picture/Snipaste_2024-04-14_23-00-25.png)
 
