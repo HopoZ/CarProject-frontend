@@ -1,6 +1,5 @@
 <template>
   <div>
-    <dv-full-
     <dv-border-box-9>
       <div class="main_bar">
         <h2>
@@ -52,7 +51,7 @@
         <div><dv-border-box-12>
             <h2><dv-border-box-8>疲劳总数</dv-border-box-8></h2>
             <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
-              style="width: 90%;margin:auto;">
+              style="width: 90%;margin:auto;background-color: #BEF9FF;">
               <el-table-column prop="carNumber" label="车牌号"></el-table-column>
               <el-table-column prop="isTired" label="是否疲劳">
                 <template slot-scope="scope">
@@ -100,8 +99,10 @@
               </div>
             </div>
           </dv-border-box-12></div>
+          <div>
         <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>
-        <div id="pieChart" style="width: 350px; height: 400px;"></div>
+        <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>
+      </div>
       </div>
     </div>
 
@@ -168,7 +169,7 @@ export default {
             fontWeight: 'normal'
           }
         },
-        backgroundColor: '#f5f5f5', // 设置背景颜色
+        backgroundColor: '#BEF9FF', // 设置背景颜色
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'

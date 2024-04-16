@@ -30,6 +30,7 @@ html {
   background-repeat: no-repeat;
   background-position: center center;
   height: 100%; /* 确保背景铺满整个页面 */
+  border: none;
 }
 
 
