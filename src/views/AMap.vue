@@ -1,5 +1,6 @@
 <template>
   <div>
+    <dv-full-
     <dv-border-box-9>
       <div class="main_bar">
         <h2>
