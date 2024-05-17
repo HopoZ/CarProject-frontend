@@ -32,6 +32,7 @@
             </button></h2>
       </div>
     </dv-border-box-9>
+    
     <div class=" main">
       <div class="left">
         <div><dv-border-box-12>
@@ -140,6 +141,7 @@ export default {
     };
   },
   mounted() {
+    document.title = 'car-net';
     this.carNumber = this.$route.query.carNumber;
     if (this.carNumber === undefined) {
       this.carNumber = 'MNO345';

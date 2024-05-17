@@ -29,7 +29,9 @@
         </div>
       </div>
       <div style="text-align: center;margin: 0 auto;width: 50%;">
-        <dv-border-box-12><h1>{{ this.carNumber }}车辆详细信息</h1></dv-border-box-12>
+        <dv-border-box-12>
+          <h1>{{ this.carNumber }}车辆详细信息</h1>
+        </dv-border-box-12>
       </div>
     </div>
 
@@ -83,8 +85,11 @@
 
 
       <!-- Element UI 的模态框  车辆列表-->
-      <el-dialog :visible.sync="carListVisible" title="车辆列表" @close="hideCarList">
-        <el-table :data="CarDataList" border style="width: 100%">
+      <el-dialog :visible.sync="carListVisible" title="车辆列表" @close="hideCarList"
+      style="">
+      <!-- 这组件我都不知道怎么改颜色 -->
+        <el-table :data="CarDataList" border 
+        style="width: 100%;">
           <el-table-column prop="carNumber" label="车牌号"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -108,28 +113,39 @@
       </el-dialog>
 
       <div class="right_section">
-        <!-- 温度折线图 -->
-        <div class="chart_container" ref="chartContainer" style="width: 600px; height: 400px;"></div>
+        <dv-border-box-8>
+          <!-- 温度折线图 -->
+          <div class="chart_container" ref="chartContainer" style="width: 600px; height: 400px;"></div>
+        </dv-border-box-8>
       </div>
+
     </div>
 
-    <div class="chart_row">
-      <!-- 酒驾概率图 -->
-      <div class="chart_container">
-        <h2><dv-border-box-8>酒驾概率</dv-border-box-8></h2>
-        <div id="drunkDrivingChart" style="width:400px;height:400px;"></div>
+      <div class="chart_row">
+        <!-- 酒驾概率图 -->
+        <div class="chart_container">
+          <dv-border-box-8>
+            <h2><dv-border-box-8>酒驾概率</dv-border-box-8></h2>
+            <div id="drunkDrivingChart" style="width:400px;height:350px;"></div>
+          </dv-border-box-8>
+        </div>
+        <!-- 酒精浓度比图 -->
+        <div class="chart_container">
+          <dv-border-box-8>
+          <h2><dv-border-box-8>酒精浓度</dv-border-box-8></h2>
+          <div id="alcoholConcChart" style="width:400px;height:350px;"></div>
+        </dv-border-box-8>
+        </div>
+        <!-- 温度表盘图 -->
+        <div class="chart_container">
+          <dv-border-box-8>
+          <h2><dv-border-box-8>车内温度</dv-border-box-8></h2>
+          <div id="temperatureChart" style="width: 400px; height: 350px;"></div>
+        </dv-border-box-8>
+        </div>
       </div>
-      <!-- 酒精浓度比图 -->
-      <div class="chart_container">
-        <h2><dv-border-box-8>酒精浓度</dv-border-box-8></h2>
-        <div id="alcoholConcChart" style="width:400px;height:400px;"></div>
-      </div>
-      <!-- 温度表盘图 -->
-      <div class="chart_container">
-        <h2><dv-border-box-8>车内温度</dv-border-box-8></h2>
-        <div id="temperatureChart" style="width: 400px; height: 400px;"></div>
-      </div>
-    </div>
+
+
   </div>
 </template>
 
@@ -141,6 +157,7 @@ import * as echarts from 'echarts';
 
 export default {
   mounted() {
+    document.title = 'car-detail';
     this.carNumber = this.$route.query.carNumber;
     this.GetCarDataList();
     this.AddPhoto();
