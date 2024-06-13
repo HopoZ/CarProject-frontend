@@ -34,7 +34,8 @@
     </dv-border-box-9>
     
     <div class=" main">
-      <div class="left">
+
+      <div class="left"  style="display: flex;flex-direction: column;">
         <div><dv-border-box-12>
             <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column; align-items: center;">
@@ -50,9 +51,9 @@
           </dv-border-box-12></div>
 
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>疲劳总数</dv-border-box-8></h2>
-            <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
-              style="width: 90%;margin:auto;background-color: #BEF9FF;">
+            <h2><dv-border-box-8>疲劳情况</dv-border-box-8></h2>
+            <el-table :data="CarDataList" height="70%" border :row-class-name="tableRowClassName"
+              style="width: 90%;margin:auto;background-color: #BEF9FF;font-size: xx-small">
               <el-table-column prop="carNumber" label="车牌号"></el-table-column>
               <el-table-column prop="isTired" label="是否疲劳">
                 <template slot-scope="scope">
@@ -64,20 +65,12 @@
             </el-table>
           </dv-border-box-12></div>
 
-        <div><dv-border-box-12>
-            <h2><dv-border-box-8>酒驾总数</dv-border-box-8></h2>
-            <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
-              style="width: 90%;margin:auto;">
-              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
-              <el-table-column prop="isDrunk" label="是否酒驾">
-                <template slot-scope="scope">
-                  <el-tag
-                    :style="{ backgroundColor: scope.row.isDrunk === 'Drunk!' ? '#FF4444' : '', color: '#FFFFFF' }"
-                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isDrunk }}</el-tag>
-                </template>
-              </el-table-column>
-            </el-table>
-          </dv-border-box-12></div>
+<!--        <div><dv-border-box-12>-->
+<!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
+<!--          &lt;!&ndash;          <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>&ndash;&gt;-->
+<!--        </dv-border-box-12>>-->
+<!--        </div>-->
+
       </div>
 
       <div class="mid" style="display: flex;flex-direction: column;">
@@ -86,7 +79,8 @@
           <div id="amapcontainer" class="map-container"></div>
         </dv-border-box-11>
       </div>
-      <div class="right">
+
+      <div class="right"  style="display: flex;flex-direction: column;">
         <div style="flex:1;"><dv-border-box-12>
             <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column;">
@@ -100,11 +94,29 @@
               </div>
             </div>
           </dv-border-box-12></div>
-          <div>
-        <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>
-        <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>
+        <div><dv-border-box-12>
+          <h2><dv-border-box-8>酒驾情况</dv-border-box-8></h2>
+          <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
+                    style="width: 90%;margin:auto;">
+            <el-table-column prop="carNumber" label="车牌号"></el-table-column>
+            <el-table-column prop="isDrunk" label="是否酒驾">
+              <template slot-scope="scope">
+                <el-tag
+                    :style="{ backgroundColor: scope.row.isDrunk === 'Drunk!' ? '#FF4444' : '', color: '#FFFFFF' }"
+                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isDrunk }}</el-tag>
+              </template>
+            </el-table-column>
+          </el-table>
+        </dv-border-box-12></div>
+
+<!--        <div><dv-border-box-12>-->
+<!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
+<!--          <center><div id="pieChart" style="width: 350px; height: 150px;"></div></center>-->
+<!--        </dv-border-box-12>>-->
+<!--        </div>-->
+
       </div>
-      </div>
+
     </div>
 
   </div>
@@ -255,11 +267,11 @@ export default {
           // terrain: true, //开启地形图
           // mapStyle: 'amap://styles/blue', //设置地图的显示样式
           resizeEnable: true, //是否监控地图容器尺寸变化
-          zoom: this.zoom, // 地图显示的缩放级别
+          // zoom: this.zoom, // 地图显示的缩放级别
+          zoom: 18, //初始化地图级别
           zoomEnable: true, // 地图是否可缩放，默认值为true
           dragEnable: true, // 地图是否可通过鼠标拖拽平移，默认为true
           doubleClickZoom: true, // 地图是否可通过双击鼠标放大地图，默认为true
-          zoom: 18, //初始化地图级别
           center: [this.data.longitude, this.data.latitude], // 初始化中心点坐标 某辆车的坐标
         });
         // 创建 AMap.Icon 实例：
@@ -415,6 +427,12 @@ export default {
 .el-table .danger-row {
   background: rgb(190, 7, 7);
 }
+
+/deep/.el-table--scrollable-y ::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 /* 主导航栏样式 */
 .main_bar {

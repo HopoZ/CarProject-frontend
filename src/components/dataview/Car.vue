@@ -474,8 +474,8 @@ export default {
     //图片获取
     AddPhoto() {
       this.noPhotoInfoVisible = true;
-      const imageKownUrl = 'http://82.156.65.122:8060/photoKnow/';
-      const imggeUnkownUrl = 'http://82.156.65.122:8060/photoUnknow/';
+      const imageKownUrl = 'http://82.156.65.122:8080/photoKnow/';
+      const imggeUnkownUrl = 'http://82.156.65.122:8080/photoUnknow/';
 
       const imgElement = document.createElement('img');
 
