@@ -51,12 +51,12 @@
               <tr>
                 <td>
                   <center>
-                    <div :color="['blue']" style="width:100px;height:60px;"></div>
+                    <div :color="['white']" style="width:100px;height:60px;"></div>
                   </center>
                 </td>
                 <td>
                   <center>
-                    <div :color="['blue']" :reverse="true" style="width:100px;height:60px;"></div>
+                    <div :color="['white']" :reverse="true" style="width:100px;height:60px;"></div>
                   </center>
                 </td>
               </tr>
@@ -544,7 +544,8 @@ export default {
       const temperatureData = this.tempData.map(item => item.temperature);
       const option = {
         title: {
-          text: '车辆温度趋势'
+          text: '车辆温度趋势',
+          color: 'white'
         },
         xAxis: {
           type: 'category',
@@ -581,11 +582,11 @@ td {
 }
 
 .car-detail-table .title {
-  color: blue;
+  color: white;
 }
 
 .car-detail-table td {
-  color: blue;
+  color: white;
 
 }
 

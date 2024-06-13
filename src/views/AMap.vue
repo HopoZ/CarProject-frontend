@@ -4,38 +4,38 @@
       <div class="main_bar">
         <h2>
           <button type="button" class="button">
-              <div class="button-top">数据概览</div>
-              <div class="button-bottom"></div>
-              <div class="button-base"></div>
-            </button>
+            <div class="button-top">数据概览</div>
+            <div class="button-bottom"></div>
+            <div class="button-base"></div>
+          </button>
         </h2>
         <h2>
-         <button type="button" class="button">
-              <div class="button-top">系统设置</div>
-              <div class="button-bottom"></div>
-              <div class="button-base"></div>
-            </button>
+          <button type="button" class="button">
+            <div class="button-top">系统设置</div>
+            <div class="button-bottom"></div>
+            <div class="button-base"></div>
+          </button>
         </h2>
 
         <h1 class="title">
-          <center><dv-decoration-7 :color="['blue', 'blue']">车联网系统</dv-decoration-7></center>
+          <center><dv-decoration-7 :color="['blue', 'purple']">车联网系统</dv-decoration-7></center>
         </h1>
         <h2><button type="button" class="button">
-              <div class="button-top">查询统计</div>
-              <div class="button-bottom"></div>
-              <div class="button-base"></div>
-            </button></h2>
+            <div class="button-top">查询统计</div>
+            <div class="button-bottom"></div>
+            <div class="button-base"></div>
+          </button></h2>
         <h2><button type="button" class="button">
-              <div class="button-top">信息录入</div>  
-              <div class="button-bottom"></div>
-              <div class="button-base"></div>
-            </button></h2>
+            <div class="button-top">信息录入</div>
+            <div class="button-bottom"></div>
+            <div class="button-base"></div>
+          </button></h2>
       </div>
     </dv-border-box-9>
-    
+
     <div class=" main">
 
-      <div class="left"  style="display: flex;flex-direction: column;">
+      <div class="left" style="display: flex;flex-direction: column;">
         <div><dv-border-box-12>
             <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column; align-items: center;">
@@ -50,9 +50,9 @@
             </div>
           </dv-border-box-12></div>
 
-        <div><dv-border-box-12>
-            <h2><dv-border-box-8>疲劳情况</dv-border-box-8></h2>
-            <el-table :data="CarDataList" height="70%" border :row-class-name="tableRowClassName"
+        <div style="display:flex"><dv-border-box-12>
+            <h2><dv-border-box-8>疑似疲劳车辆</dv-border-box-8></h2>
+            <!-- <el-table :data="CarDataList" height="70%" border :row-class-name="tableRowClassName"
               style="width: 90%;margin:auto;background-color: #BEF9FF;font-size: xx-small">
               <el-table-column prop="carNumber" label="车牌号"></el-table-column>
               <el-table-column prop="isTired" label="是否疲劳">
@@ -61,15 +61,17 @@
                     :style="{ backgroundColor: scope.row.isTired === 'Tired!' ? '#FF4444' : '', color: '#FFFFFF' }"
                     disable-transitions>{{ scope.row.tag }}{{ scope.row.isTired }}</el-tag>
                 </template>
-              </el-table-column>
-            </el-table>
+</el-table-column>
+</el-table> -->
+            <dv-scroll-board :config="CarDataListConfig1" style="width:90%;height:80%;margin-left: 20px;" />
+
           </dv-border-box-12></div>
 
-<!--        <div><dv-border-box-12>-->
-<!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
-<!--          &lt;!&ndash;          <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>&ndash;&gt;-->
-<!--        </dv-border-box-12>>-->
-<!--        </div>-->
+        <!--        <div><dv-border-box-12>-->
+        <!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
+        <!--          &lt;!&ndash;          <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>&ndash;&gt;-->
+        <!--        </dv-border-box-12>>-->
+        <!--        </div>-->
 
       </div>
 
@@ -80,7 +82,7 @@
         </dv-border-box-11>
       </div>
 
-      <div class="right"  style="display: flex;flex-direction: column;">
+      <div class="right" style="display: flex;flex-direction: column;">
         <div style="flex:1;"><dv-border-box-12>
             <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column;">
@@ -95,25 +97,26 @@
             </div>
           </dv-border-box-12></div>
         <div><dv-border-box-12>
-          <h2><dv-border-box-8>酒驾情况</dv-border-box-8></h2>
-          <el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
-                    style="width: 90%;margin:auto;">
-            <el-table-column prop="carNumber" label="车牌号"></el-table-column>
-            <el-table-column prop="isDrunk" label="是否酒驾">
-              <template slot-scope="scope">
-                <el-tag
+            <h2><dv-border-box-8>疑似酒驾车辆</dv-border-box-8></h2>
+            <!--<el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
+              style="width: 90%;margin:auto;">
+              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
+              <el-table-column prop="isDrunk" label="是否酒驾">
+                <template slot-scope="scope">
+                  <el-tag
                     :style="{ backgroundColor: scope.row.isDrunk === 'Drunk!' ? '#FF4444' : '', color: '#FFFFFF' }"
                     disable-transitions>{{ scope.row.tag }}{{ scope.row.isDrunk }}</el-tag>
-              </template>
-            </el-table-column>
-          </el-table>
-        </dv-border-box-12></div>
+                </template>
+              </el-table-column>
+            </el-table>-->
+            <dv-scroll-board :config="CarDataListConfig2" style="width:90%;height:80%;margin-left: 20px;" />
+          </dv-border-box-12></div>
 
-<!--        <div><dv-border-box-12>-->
-<!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
-<!--          <center><div id="pieChart" style="width: 350px; height: 150px;"></div></center>-->
-<!--        </dv-border-box-12>>-->
-<!--        </div>-->
+        <!--        <div><dv-border-box-12>-->
+        <!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
+        <!--          <center><div id="pieChart" style="width: 350px; height: 150px;"></div></center>-->
+        <!--        </dv-border-box-12>>-->
+        <!--        </div>-->
 
       </div>
 
@@ -127,6 +130,7 @@ import AMapLoader from '@amap/amap-jsapi-loader';
 import { getData, getCarDataList } from '@/api/index.js';
 import router from '@/router';
 import * as echarts from 'echarts';
+import { Card } from 'element-ui';
 
 export default {
   name: 'AMap',
@@ -135,6 +139,8 @@ export default {
       map: null,
       marker: null,
       CarDataList: [],
+      CarDataListConfig1: null,
+      CarDataListConfig2: null,
       carNumber: 'MNO345',
       data: {},
       carType: [{
@@ -224,6 +230,35 @@ export default {
       }
       return 'danger-row';
     },
+    updateConfig() {
+      this.CarDataListConfig1 = {
+        header: ['车牌号', '疲劳驾驶'],
+        data: this.CarDataList.map((item, index) => [
+          `${item.carNumber}`,
+          ` ${item.isTired}`,
+        ]),
+        index: true,
+        columnWidth: [50],
+        align: ['center'],
+        carousel: 'single',
+        hoverPause: true,
+        waitTime: 500
+      }
+      console.log('this.CarDataListConfig:\n', this.CarDataListConfig);
+      this.CarDataListConfig2 = {
+        header: ['车牌号', '酒精驾驶'],
+        data: this.CarDataList.map((item, index) => [
+          `${item.carNumber}`,
+          ` ${item.isDrunk}`
+        ]),
+        index: true,
+        columnWidth: [50],
+        align: ['center'],
+        carousel: 'single',
+        hoverPause: true,
+        waitTime: 700
+      }
+    },
     // 获取车辆列表数据
     GetCarDataList() {
       getCarDataList()
@@ -232,7 +267,9 @@ export default {
           console.log('获取到车辆列表了', this.CarDataList);
           await this.GetData(this.carNumber);
           this.initAMap();
-          this.renderPieChart();
+          // this.renderPieChart();
+          this.updateConfig();
+
         })
         .catch(error => {
           console.error('获取车辆列表失败:', error);
@@ -289,9 +326,9 @@ export default {
             map: this.map, // 将标记添加到地图上
             icon: icon,
             title: this.data.carNumber, // 设置标记的标题(悬浮显示)
-            label: {
-              content: car.carNumber, // 设置标记标题内容
-            }
+            // label: {
+            //   content: car.carNumber, // 设置标记标题内容
+            // } 字体颜色的bug
           });
           // 为地图钉添加点击事件处理程序
           marker.on('click', () => {
@@ -424,12 +461,9 @@ export default {
   transform: rotateY(20deg);
 }
 
+
 .el-table .danger-row {
   background: rgb(190, 7, 7);
-}
-
-/deep/.el-table--scrollable-y ::-webkit-scrollbar {
-  display: none;
 }
 
 
@@ -457,7 +491,7 @@ export default {
 .title {
   font-size: 30px;
   font-weight: bold;
-  color: blue;
+  color: white;
   text-align: center;
   margin-top: 10px;
 }
