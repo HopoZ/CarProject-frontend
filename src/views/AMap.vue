@@ -1,6 +1,8 @@
 <template>
   <div>
-    <dv-border-box-9>
+
+<!--        <center><dv-decoration-7 :color="['blue', 'purple']">车联网系统</dv-decoration-7></center>-->
+        <img src="@/picture/top.png">
       <div class="main_bar">
         <h2>
           <button type="button" class="button">
@@ -17,9 +19,6 @@
           </button>
         </h2>
 
-        <h1 class="title">
-          <center><dv-decoration-7 :color="['blue', 'purple']">车联网系统</dv-decoration-7></center>
-        </h1>
         <h2><button type="button" class="button">
             <div class="button-top">查询统计</div>
             <div class="button-bottom"></div>
@@ -31,7 +30,6 @@
             <div class="button-base"></div>
           </button></h2>
       </div>
-    </dv-border-box-9>
 
     <div class=" main">
 
@@ -40,11 +38,11 @@
             <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column; align-items: center;">
               <div>
-                <img src="./picture/info_1.png" />
+                <img src="../picture/info_1.png" />
                 车辆总数{{ CarDataList.length }}
               </div>
               <div>
-                <img src="./picture/info_2.png" />
+                <img src="../picture/info_2.png" />
                 车辆在线{{ CarDataList.length }}
               </div>
             </div>
@@ -87,11 +85,11 @@
             <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column;">
               <div>
-                <img src="./picture/info_4.png" />
+                <img src="../picture/info_4.png" />
                 行驶里程总计数 444km
               </div>
               <div>
-                <img src="./picture/info_5.png" />
+                <img src="../picture/info_5.png" />
                 行驶里程平均数 88km
               </div>
             </div>
@@ -189,7 +187,7 @@ export default {
             fontWeight: 'normal'
           }
         },
-        backgroundColor: '#BEF9FF', // 设置背景颜色
+        backgroundColor: '#121319', // 设置背景颜色
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -239,6 +237,7 @@ export default {
         ]),
         index: true,
         columnWidth: [50],
+        headerBGC: 'black',
         align: ['center'],
         carousel: 'single',
         hoverPause: true,
@@ -253,6 +252,7 @@ export default {
         ]),
         index: true,
         columnWidth: [50],
+        headerBGC: 'black',
         align: ['center'],
         carousel: 'single',
         hoverPause: true,
@@ -313,10 +313,10 @@ export default {
         });
         // 创建 AMap.Icon 实例：
         const icon = new AMap.Icon({
-          size: new AMap.Size(40, 50),    // 图标尺寸
-          image: require("./picture/car.png"),  // Icon的图像
+          size: new AMap.Size(62,43),    // 图标尺寸
+          image: require("../picture/car.png"),  // Icon的图像
           imageOffset: new AMap.Pixel(0, 0),  // 图像相对展示区域的偏移量，适于雪碧图等
-          imageSize: new AMap.Size(40, 50)   // 根据所设置的大小拉伸或压缩图片
+          imageSize: new AMap.Size(62,43)   // 根据所设置的大小拉伸或压缩图片
         });
         // 创建所有地图钉（标记）并添加到当前位置
         this.CarDataList.forEach(async (car) => {
@@ -399,7 +399,7 @@ export default {
   width: 100%;
   height: 100%;
   box-sizing: content-box;
-  background-image: radial-gradient(#0f59edea, rgb(21, 5, 173));
+  background-image: radial-gradient(#0f59edea, rgb(20, 44, 133));
   text-align: center;
   color: #fff;
   box-shadow: inset 0 0 0px 1px rgba(255, 255, 255, .2), 0 1px 2px 1px rgba(255, 255, 255, .2);

@@ -26,8 +26,8 @@ export default {
 <style>
 /* 设置整个页面的背景图片 */
 html {
-  background-image: url('./views/picture/background.png');
-  background-color: #BEF9FF;
+  background-image: url('picture/background.png');
+  background-color: #2d354e;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;

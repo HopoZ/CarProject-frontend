@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="main_bar">
+<!--      TODO 修正照片位置-->
       <div id="imageContainer" class="imageContainer">
         <!-- 这里是动态添加的图片元素将会被放置的位置 -->
       </div>
@@ -28,7 +29,13 @@
           </a>
         </div>
       </div>
+
+      <h1 class="title">
+        <!--        <center><dv-decoration-7 :color="['blue', 'purple']">车联网系统</dv-decoration-7></center>-->
+        <img src="@/picture/top.png">
+      </h1>
       <div style="text-align: center;margin: 0 auto;width: 50%;">
+
         <dv-border-box-12>
           <h1>{{ this.carNumber }}车辆详细信息</h1>
         </dv-border-box-12>
@@ -86,10 +93,12 @@
 
       <!-- Element UI 的模态框  车辆列表-->
       <el-dialog :visible.sync="carListVisible" title="车辆列表" @close="hideCarList"
-      style="">
+                 class="styleDialog"
+                 :fullscreen=false>
       <!-- 这组件我都不知道怎么改颜色 -->
-        <el-table :data="CarDataList" border 
-        style="width: 100%;">
+        <el-table :data="CarDataList" border
+                  class="styleTable"
+        style="width: 100%;height: auto">
           <el-table-column prop="carNumber" label="车牌号"></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
@@ -107,9 +116,9 @@
           <input type="text" id="carNumber" v-model="newCarNumber" required>
           <button type="submit">注册车辆</button>
         </form>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="hideCarList">关闭</el-button>
-        </span>
+<!--        <span slot="footer" class="dialog-footer">-->
+<!--          <el-button @click="hideCarList">关闭</el-button>-->
+<!--        </span>-->
       </el-dialog>
 
       <div class="right_section">
@@ -568,7 +577,22 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
+/* 修改定制化的el-table的css */
+.styleTable{
+  background-color: transparent !important;
+}
+.styleTable ::v-deep .el-table th .el-table__cell,
+::v-deep .el-table th,
+::v-deep .el-table td {
+  background-color: black !important;
+  color: white !important;
+}
+</style>
+<style >
+
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -789,4 +813,15 @@ th {
   display: flex;
   justify-content: space-around;
 }
+
+/*定制el-dialog的样式*/
+/*标题背景色*/
+.styleDialog .el-dialog__header  {
+  background-color: #141d4d;
+}
+/*body背景色*/
+.styleDialog .el-dialog__body  {
+  background-color: #141d4d;
+}
 </style>
+
