@@ -18,7 +18,6 @@
             <div class="button-base"></div>
           </button>
         </h2>
-
         <h2><button type="button" class="button">
             <div class="button-top">查询统计</div>
             <div class="button-bottom"></div>
@@ -37,39 +36,27 @@
         <div><dv-border-box-12>
             <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column; align-items: center;">
-              <div>
-                <img src="../picture/info_1.png" />
-                车辆总数{{ CarDataList.length }}
+                <div  style="position: absolute;z-index: 0">
+                <img src="../picture/TxtBg.png" />
               </div>
-              <div>
-                <img src="../picture/info_2.png" />
-                车辆在线{{ CarDataList.length }}
+              <div style="position: absolute;z-index: 1">
+                <div>
+                  <img src="../picture/Frame15.png" />
+<!--                 TODO {{ CarDataList.length }}-->
+                </div>
+                <div>
+                  <img src="../picture/Frame16.png" />
+<!--                  TODO 车辆在线{{ CarDataList.length }}-->
+                </div>
               </div>
             </div>
           </dv-border-box-12></div>
 
-        <div style="display:flex"><dv-border-box-12>
+        <div><dv-border-box-12>
             <h2><dv-border-box-8>疑似疲劳车辆</dv-border-box-8></h2>
-            <!-- <el-table :data="CarDataList" height="70%" border :row-class-name="tableRowClassName"
-              style="width: 90%;margin:auto;background-color: #BEF9FF;font-size: xx-small">
-              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
-              <el-table-column prop="isTired" label="是否疲劳">
-                <template slot-scope="scope">
-                  <el-tag
-                    :style="{ backgroundColor: scope.row.isTired === 'Tired!' ? '#FF4444' : '', color: '#FFFFFF' }"
-                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isTired }}</el-tag>
-                </template>
-</el-table-column>
-</el-table> -->
             <dv-scroll-board :config="CarDataListConfig1" style="width:90%;height:80%;margin-left: 20px;" />
 
           </dv-border-box-12></div>
-
-        <!--        <div><dv-border-box-12>-->
-        <!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
-        <!--          &lt;!&ndash;          <center><div id="pieChart" style="width: 350px; height: 400px;"></div></center>&ndash;&gt;-->
-        <!--        </dv-border-box-12>>-->
-        <!--        </div>-->
 
       </div>
 
@@ -81,32 +68,26 @@
       </div>
 
       <div class="right" style="display: flex;flex-direction: column;">
-        <div style="flex:1;"><dv-border-box-12>
+        <div><dv-border-box-12>
             <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
-            <div style="display: flex;flex-direction: column;">
-              <div>
-                <img src="../picture/info_4.png" />
-                行驶里程总计数 444km
+            <div style="display: flex;flex-direction: column; align-items: center;height: 100%">
+              <div  style="position: absolute;z-index: 0">
+                <img src="../picture/TxBgR.png" />
               </div>
-              <div>
-                <img src="../picture/info_5.png" />
-                行驶里程平均数 88km
+              <div style="position: relative;z-index: 1;display: flex;flex-direction: row;align-items: center;justify-content: center;height: 100%;width: 100%">
+                <div>
+                  <img   src="../picture/Group60.png"/>
+                </div>
+                <div style="display: flex;flex-direction: column;margin-left: 2px;height: 40%;justify-content: space-between">
+                  <div style="margin-bottom: 50px;"><strong>行驶里程总计数</strong><br/> <strong>59km</strong></div>
+                  <div><strong>行驶里程平均数</strong><br/> <strong>59km</strong></div>
+                </div>
               </div>
             </div>
           </dv-border-box-12></div>
+
         <div><dv-border-box-12>
             <h2><dv-border-box-8>疑似酒驾车辆</dv-border-box-8></h2>
-            <!--<el-table :data="CarDataList" height="60%" border :row-class-name="tableRowClassName"
-              style="width: 90%;margin:auto;">
-              <el-table-column prop="carNumber" label="车牌号"></el-table-column>
-              <el-table-column prop="isDrunk" label="是否酒驾">
-                <template slot-scope="scope">
-                  <el-tag
-                    :style="{ backgroundColor: scope.row.isDrunk === 'Drunk!' ? '#FF4444' : '', color: '#FFFFFF' }"
-                    disable-transitions>{{ scope.row.tag }}{{ scope.row.isDrunk }}</el-tag>
-                </template>
-              </el-table-column>
-            </el-table>-->
             <dv-scroll-board :config="CarDataListConfig2" style="width:90%;height:80%;margin-left: 20px;" />
           </dv-border-box-12></div>
 
@@ -237,7 +218,9 @@ export default {
         ]),
         index: true,
         columnWidth: [50],
-        headerBGC: 'black',
+        headerBGC:'aab4d1',
+        oddRowBGC:'f0f0f0',
+        evenRowBGC:'ffffff',
         align: ['center'],
         carousel: 'single',
         hoverPause: true,
@@ -252,7 +235,9 @@ export default {
         ]),
         index: true,
         columnWidth: [50],
-        headerBGC: 'black',
+        headerBGC:'aab4d1',
+        oddRowBGC:'f0f0f0',
+        evenRowBGC:'ffffff',
         align: ['center'],
         carousel: 'single',
         hoverPause: true,
@@ -471,6 +456,7 @@ export default {
 /* 主导航栏样式 */
 .main_bar {
   display: flex;
+  margin-top: -30px;
   justify-content: space-around;
   align-items: center;
 }
@@ -479,7 +465,7 @@ export default {
 /* 地图容器样式 */
 .map-container {
   margin: 0 auto;
-  height: 83vh;
+  height: 65vh;
 
   margin-left: auto;
   margin-right: auto;
@@ -510,7 +496,7 @@ export default {
 .mid {
   width: 50%;
   margin: 0 auto;
-  height: 90vh;
+  height: 72vh;
 
   margin-left: auto;
   margin-right: auto;

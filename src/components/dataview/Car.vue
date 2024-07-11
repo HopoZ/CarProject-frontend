@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="main_bar">
 <!--      TODO 修正照片位置-->
       <div id="imageContainer" class="imageContainer">
@@ -43,8 +43,11 @@
     </div>
 
     <div class="main">
+      <div  class="center-image">
+        <img src="@/picture/center.png">
+      </div>
       <div class="left_section">
-        <center><button class="ListButton" @click="showCarList">展示车辆列表</button></center>
+        <center><button class="ListButton" @click="showCarList">车辆列表</button></center>
         <center><dv-decoration-5 style="width:300px;height:40px;" /></center>
 
 
@@ -128,8 +131,6 @@
         </dv-border-box-8>
       </div>
 
-    </div>
-
       <div class="chart_row">
         <!-- 酒驾概率图 -->
         <div class="chart_container">
@@ -141,18 +142,22 @@
         <!-- 酒精浓度比图 -->
         <div class="chart_container">
           <dv-border-box-8>
-          <h2><dv-border-box-8>酒精浓度</dv-border-box-8></h2>
-          <div id="alcoholConcChart" style="width:400px;height:350px;"></div>
-        </dv-border-box-8>
+            <h2><dv-border-box-8>酒精浓度</dv-border-box-8></h2>
+            <div id="alcoholConcChart" style="width:400px;height:350px;"></div>
+          </dv-border-box-8>
         </div>
         <!-- 温度表盘图 -->
         <div class="chart_container">
           <dv-border-box-8>
-          <h2><dv-border-box-8>车内温度</dv-border-box-8></h2>
-          <div id="temperatureChart" style="width: 400px; height: 350px;"></div>
-        </dv-border-box-8>
+            <h2><dv-border-box-8>车内温度</dv-border-box-8></h2>
+            <div id="temperatureChart" style="width: 400px; height: 350px;"></div>
+          </dv-border-box-8>
         </div>
       </div>
+
+    </div>
+
+
 
 
   </div>
@@ -822,6 +827,21 @@ th {
 /*body背景色*/
 .styleDialog .el-dialog__body  {
   background-color: #141d4d;
+}
+
+
+.center-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 87vh; /* 设置高度为视口高度 */
 }
 </style>
 
