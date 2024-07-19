@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import dataview from './components/dataview/index.vue';
+import dataview from './components/dataview/Car.vue';
 import router from './router';
 
 export default {
@@ -34,11 +34,12 @@ export default {
 html {
   background-image: url('picture/background.png');
   background-size: cover;
-  background-color: #141d4d;
+  background-color: #262e42;
   background-repeat: no-repeat;
   background-position: center center;
   height: 100%; /* 确保背景铺满整个页面 */
   border: none;
+  overflow-x: hidden; /* 防止水平滚动条 */
 }
 
 #app {
@@ -52,13 +53,14 @@ html {
 /* 美化页脚 */
 .footer {
   position: relative;
+  bottom: 0;
   margin-top: 16px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.1); /* 添加半透明背景 */
   border-radius: 8px; /* 添加圆角 */
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* 垂直居中 */
+  align-items: flex-end; /* 垂直居底 */
   gap: 20px; /* 间距 */
   height: 50px; /* 设置高度 */
 }

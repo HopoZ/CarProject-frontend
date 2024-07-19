@@ -56,3 +56,24 @@ return axios.get(base + '/web/getTemperatureLog', {
 });
 }
 
+//获取心率
+export function getHeartRateLog(carNumber) {
+return axios.get(base + '/web/getHeartrateLog', {
+    params: {
+        carNumber: carNumber
+    }
+});
+}
+
+//统计车辆总数
+export function getCarCount() {
+return axios.get(base + '/web/totalCarNumber', {
+});
+}
+
+
+//统计车辆类型
+export function getCarType() {
+return axios.get(base + '/web/getCarTypeNumber', {
+});
+}

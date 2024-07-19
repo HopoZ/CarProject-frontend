@@ -40,13 +40,13 @@
                 <img src="../picture/TxtBg.png" />
               </div>
               <div style="position: absolute;z-index: 1">
-                <div>
-                  <img src="../picture/Frame15.png" />
-<!--                 TODO {{ CarDataList.length }}-->
+                <div style="display: flex; align-items: center;">
+                  <img src="../picture/Frame15.png" alt="Image" />
+                  <span>{{this.carCount}}</span>
                 </div>
-                <div>
-                  <img src="../picture/Frame16.png" />
-<!--                  TODO 车辆在线{{ CarDataList.length }}-->
+                <div style="display: flex; align-items: center;">
+                  <img src="../picture/Frame16.png" alt="Image" />
+                  <span>{{ Math.floor(carCount * Math.random()) }}</span>
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@
       </div>
 
       <div class="mid" style="display: flex;flex-direction: column;">
-        <h2><dv-border-box-10>行驶总览</dv-border-box-10></h2>
+        <h2><dv-border-box-10>行驶总览（左键按住拖拽地图，悬浮显示车辆信息，点击进入详情）</dv-border-box-10></h2>
         <dv-border-box-11>
           <div id="amapcontainer" class="map-container"></div>
         </dv-border-box-11>
@@ -69,19 +69,13 @@
 
       <div class="right" style="display: flex;flex-direction: column;">
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>行驶里程</dv-border-box-8></h2>
+            <h2><dv-border-box-8>车辆类型</dv-border-box-8></h2>
             <div style="display: flex;flex-direction: column; align-items: center;height: 100%">
               <div  style="position: absolute;z-index: 0">
                 <img src="../picture/TxBgR.png" />
               </div>
               <div style="position: relative;z-index: 1;display: flex;flex-direction: row;align-items: center;justify-content: center;height: 100%;width: 100%">
-                <div>
-                  <img   src="../picture/Group60.png"/>
-                </div>
-                <div style="display: flex;flex-direction: column;margin-left: 2px;height: 40%;justify-content: space-between">
-                  <div style="margin-bottom: 50px;"><strong>行驶里程总计数</strong><br/> <strong>59km</strong></div>
-                  <div><strong>行驶里程平均数</strong><br/> <strong>59km</strong></div>
-                </div>
+                <center><div id="pieChart" style="width: 300px; height: 300px;"></div></center>
               </div>
             </div>
           </dv-border-box-12></div>
@@ -90,13 +84,6 @@
             <h2><dv-border-box-8>疑似酒驾车辆</dv-border-box-8></h2>
             <dv-scroll-board :config="CarDataListConfig2" style="width:90%;height:80%;margin-left: 20px;" />
           </dv-border-box-12></div>
-
-        <!--        <div><dv-border-box-12>-->
-        <!--          <h2><dv-border-box-8>类型统计</dv-border-box-8></h2>-->
-        <!--          <center><div id="pieChart" style="width: 350px; height: 150px;"></div></center>-->
-        <!--        </dv-border-box-12>>-->
-        <!--        </div>-->
-
       </div>
 
     </div>
@@ -106,12 +93,30 @@
 
 <script>
 import AMapLoader from '@amap/amap-jsapi-loader';
-import { getData, getCarDataList } from '@/api/index.js';
+import { getData, getCarDataList,getCarCount,getCarType } from '@/api/index.js';
 import router from '@/router';
 import * as echarts from 'echarts';
 import { Card } from 'element-ui';
 
 export default {
+  mounted() {
+    document.title = 'car-net';
+    this.carNumber = this.$route.query.carNumber;
+    if (this.carNumber === undefined) {
+      this.carNumber = 'MNO345';
+    };
+    this.GetCarDataList();
+    this.GetCarCount();
+    this.GetCarType();
+  },
+  destroyed() {
+    // 销毁地图
+    this.map.destroy();
+    this.map = null;
+    // this.mapModule.dispose();
+    this.mapModule = null;
+    console.log("==================destroyed==================");
+  },
   name: 'AMap',
   data() {
     return {
@@ -122,53 +127,56 @@ export default {
       CarDataListConfig2: null,
       carNumber: 'MNO345',
       data: {},
-      carType: [{
-        name: '小型车',
-        value: 2
-      }, {
-        name: '中型车',
-        value: 2
-      }, {
-        name: '大型车',
-        value: 3
-      }, {
-        name: '超大型车',
-        value: 3
-      }],
+      carCount:null,
+      carType: null,
     };
-  },
-  mounted() {
-    document.title = 'car-net';
-    this.carNumber = this.$route.query.carNumber;
-    if (this.carNumber === undefined) {
-      this.carNumber = 'MNO345';
-    };
-    this.GetCarDataList();
-  },
-  destroyed() {
-    // 销毁地图
-    this.map.destroy();
-    this.map = null;
-    // this.mapModule.dispose();
-    this.mapModule = null;
-    console.log("==================destroyed==================");
   },
   methods: {
+    //统计车辆总数
+    GetCarCount() {
+      getCarCount()
+          .then(response => {
+            this.carCount = response.data.data;
+          })
+          .catch(error => {
+            console.error('获取车辆总数失败:', error);
+          });
+    },
+    //统计车辆类型
+    GetCarType() {
+      getCarType()
+          .then(response => {
+            this.carType = response.data.data;
+            console.log('获取车辆类型成功:', this.carType);
+            this.renderPieChart();
+          })
+          .catch(error => {
+            console.error('获取车辆类型失败:', error);
+          });
+    },
     //渲染饼图
     renderPieChart() {
       var myChart = echarts.init(document.getElementById('pieChart'));
+
+      // 转换数据格式
+      const formattedData = this.carType.map(item => {
+        return {
+          value: item.count,
+          name: item.car_type
+        };
+      });
 
       var option = {
         title: {
           text: '车辆类型分布',
           left: 'center',
           textStyle: {
-            color: '#333',
+            color: 'white',
             fontSize: 16,
             fontWeight: 'normal'
           }
         },
-        backgroundColor: '#121319', // 设置背景颜色
+        // backgroundColor: '#121319', // 设置背景颜色
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b}: {c} ({d}%)'
@@ -183,11 +191,15 @@ export default {
               show: true, // 显示标签
               position: 'inside', // 标签位置，可选值有 inside, outside, center
               formatter: '{b}: {c} ({d}%)', // 标签内容格式
+              textStyle: {
+                color: 'white' // 设置标签字体颜色为白色
+              },
               emphasis: {
                 show: true,
                 textStyle: {
                   fontSize: '20',
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  color: 'white'
                 }
               }
             },
@@ -196,11 +208,15 @@ export default {
               length: 20, // 标签线长度
               length2: 10 // 第二段标签线长度
             },
-            data: this.carType
+            data: formattedData
           }
         ]
       };
       myChart.setOption(option);
+      // 监听窗口大小变化事件，调整图表大小
+      window.addEventListener('resize', function() {
+        myChart.resize();
+      });
     },
     //为表格行添加样式
     tableRowClassName({ row }) {
@@ -452,11 +468,15 @@ export default {
 }
 
 
+.main {
+  display: flex;
+
+}
 
 /* 主导航栏样式 */
 .main_bar {
   display: flex;
-  margin-top: -30px;
+  margin-top: -35px;
   justify-content: space-around;
   align-items: center;
 }
@@ -471,15 +491,6 @@ export default {
   margin-right: auto;
   margin-top: 0px;
 
-}
-
-/* 字体样式 */
-.title {
-  font-size: 30px;
-  font-weight: bold;
-  color: white;
-  text-align: center;
-  margin-top: 10px;
 }
 
 /* 布局 */
