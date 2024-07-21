@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+     <!--<meta http-equiv="refresh" content="5">  5s刷新一次页面 -->
     <!-- 路由 -->
     <router-view></router-view>
     <div class="footer">
