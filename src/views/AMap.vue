@@ -34,7 +34,7 @@
 
       <div class="left" style="display: flex;flex-direction: column;">
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>车辆总数</dv-border-box-8></h2>
+            <h2 class="expandText">车辆总数</h2>
             <div style="display: flex;flex-direction: column; align-items: center;">
                 <div  style="position: absolute;z-index: 0">
                 <img src="../picture/TxtBg.png" />
@@ -53,7 +53,7 @@
           </dv-border-box-12></div>
 
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>疑似疲劳车辆</dv-border-box-8></h2>
+            <h2 class="expandText">疑似疲劳车辆</h2>
             <dv-scroll-board :config="CarDataListConfig1" style="width:90%;height:80%;margin-left: 20px;" />
 
           </dv-border-box-12></div>
@@ -61,7 +61,7 @@
       </div>
 
       <div class="mid" style="display: flex;flex-direction: column;">
-        <h2><dv-border-box-10>行驶总览（左键按住拖拽地图，悬浮显示车辆信息，点击进入详情）</dv-border-box-10></h2>
+        <h2><dv-border-box-10>行驶总览（左键按住拖拽地图，滚轮切换大小，点击进入详情）</dv-border-box-10></h2>
         <dv-border-box-11>
           <div id="amapcontainer" class="map-container"></div>
         </dv-border-box-11>
@@ -69,7 +69,7 @@
 
       <div class="right" style="display: flex;flex-direction: column;">
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>车辆类型</dv-border-box-8></h2>
+            <h2 class="expandText">车辆类型</h2>
             <div style="display: flex;flex-direction: column; align-items: center;height: 100%">
               <div  style="position: absolute;z-index: 0">
                 <img src="../picture/TxBgR.png" />
@@ -81,7 +81,7 @@
           </dv-border-box-12></div>
 
         <div><dv-border-box-12>
-            <h2><dv-border-box-8>疑似酒驾车辆</dv-border-box-8></h2>
+            <h2 class="expandText">疑似酒驾车辆</h2>
             <dv-scroll-board :config="CarDataListConfig2" style="width:90%;height:80%;margin-left: 20px;" />
           </dv-border-box-12></div>
       </div>
@@ -230,7 +230,7 @@ export default {
         header: ['车牌号', '疲劳驾驶'],
         data: this.CarDataList.map((item, index) => [
           `${item.carNumber}`,
-          ` ${item.isTired}`,
+          item.isTired == 0 ? 'Not Tired' : '<span style="color:red;">Tired！</span>',
         ]),
         index: true,
         columnWidth: [50],
@@ -240,14 +240,14 @@ export default {
         align: ['center'],
         carousel: 'single',
         hoverPause: true,
-        waitTime: 500
+        waitTime: 500,
       }
       console.log('this.CarDataListConfig:\n', this.CarDataListConfig);
       this.CarDataListConfig2 = {
         header: ['车牌号', '酒精驾驶'],
         data: this.CarDataList.map((item, index) => [
           `${item.carNumber}`,
-          ` ${item.isDrunk}`
+          item.isDrunk  == 'No Drunk!' ? 'Not Drunk!' : '<span style="color:red;">Drunk!</span>',
         ]),
         index: true,
         columnWidth: [50],
@@ -328,9 +328,29 @@ export default {
             icon: icon,
             title: this.data.carNumber, // 设置标记的标题(悬浮显示)
             // label: {
-            //   content: car.carNumber, // 设置标记标题内容
-            // } 字体颜色的bug
+            //   content: `${car.carNumber}`, // 设置标记标题内容
+            // }
           });
+
+          const text = new AMap.Text({
+            text: car.carNumber, // 纯文本标记内容
+            anchor: 'center', // 设置文本标记锚点
+            position: [this.data.longitude, this.data.latitude], // 文本标记位置
+            style: {
+              'padding': '.5rem 1rem',
+              'margin-bottom': '1rem',
+              'border-radius': '.25rem',
+              'background-color': 'white',
+              'width': '8rem',
+              'border-width': 0,
+              'box-shadow': '0 2px 6px 0 rgba(114, 124, 245, .5)',
+              'text-align': 'center',
+              'font-size': '15px',
+              'color': 'blue'
+            }
+          });
+          text.setMap(this.map);
+
           // 为地图钉添加点击事件处理程序
           marker.on('click', () => {
             const title = marker.getTitle();
@@ -357,6 +377,21 @@ export default {
 }
 </script>
 <style scoped>
+/*地图上自定义标签样式*/
+.amap-marker-label{
+  border: 0;
+  background-color: transparent;
+}
+ .custom-label {
+  background-color: black; /* 设置标签背景颜色 */
+  border: 1px solid black; /* 设置标签边框颜色 */
+  padding: 2px 5px; /* 设置标签内边距 */
+  border-radius: 5px; /* 设置标签圆角 */
+  color: white; /* 设置文字颜色 */
+  font-size: 12px; /* 设置文字大小 */
+  white-space: nowrap; /* 防止文字换行 */
+}
+
 /* 按钮样式 */
 .button {
   -webkit-appearance: none;

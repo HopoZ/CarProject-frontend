@@ -52,7 +52,7 @@
 
         </div>
         <div>
-          <h1>{{ this.carNumber }}车辆详细信息</h1>
+          <h1 class="expandText">{{ this.carNumber }}车辆详细信息</h1>
         </div>
       </div>
     </div>
@@ -89,24 +89,6 @@
                 </td>
                 <td>12345678987</td>
               </tr>
-              <!--<tr>
-                <td>
-                  <center>打电话</center>
-                </td>
-                <td>{{ formatBoolean(this.data.phone) }}</td>
-              </tr>
-              <tr>
-                <td>
-                  <center>抽烟</center>
-                </td>
-                <td>{{ formatBoolean(this.data.smoke) }}</td>
-              </tr>
-              <tr>
-                <td>
-                  <center>喝水</center>
-                </td>
-                <td>{{ formatBoolean(this.data.water) }}</td>
-              </tr>-->
             </table>
           </div>
         </div>
@@ -796,6 +778,24 @@ export default {
 }
 </style>
 <style>
+/*使文字产生动画效果*/
+.expandText{
+  animation: reveal 2s forwards;
+}
+@keyframes reveal {
+  0% {
+    opacity: 0;
+    letter-spacing: -0.5em;
+  }
+  50% {
+    opacity: 1;
+    letter-spacing: 0.2em;
+  }
+  100% {
+    letter-spacing: normal;
+  }
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
